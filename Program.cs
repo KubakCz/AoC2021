@@ -1,18 +1,59 @@
 ﻿using System;
+using CommandLine;
+using System.Collections.Generic;
 
 namespace AoC2021
 {
     class Program
     {
+        public class Options
+        {
+            [Option('d', "day",
+                Default = 0U,
+                HelpText = "Get solutions of this day. If 0, then all days will be solved.")]
+            public uint Day { get; set; }
+
+            [Option("directory",
+                Default = @"InputData\",
+                HelpText = "Directory with inputs.")]
+            public string InputDirectory { get; set; }
+
+            [Option('e', "example",
+                HelpText = "Solve example input.")]
+            public bool Example { get; set; }
+        }
+
+        static Day[] days = { new Day01(), new Day02() };
+
         static void Main(string[] args)
         {
-            string inputPath = @"C:\Users\jakub\Programming\AoC2021\InputData\example01.txt";
-            if (args.Length != 0)
-                inputPath = args[0];
+            Parser.Default.ParseArguments<Options>(args)
+                   .WithParsed<Options>(RunOptions);
+        }
 
-            Day d = new Day01(inputPath);
-            Console.WriteLine(d.Solve1());
-            Console.WriteLine(d.Solve2());
+        static void RunOptions(Options o)
+        {
+            if (o.Day == 0)
+                for (uint i = 1U; i <= days.Length; ++i)
+                {
+                    SolveDay(i, GetFileName(i, o.InputDirectory, o.Example));
+                }
+            else
+                SolveDay(o.Day, GetFileName(o.Day, o.InputDirectory, o.Example));
+        }
+
+        static string GetFileName(uint i, string inputDirectory, bool example)
+            => $"{inputDirectory}{(example ? "example" : "input")}{i,2:00}.txt";
+
+        static void SolveDay(uint i, string inputPath)
+        {
+            if (i == 0 || i > days.Length)
+                throw new ArgumentOutOfRangeException($"{i} is not valid day - use value from 0 to {days.Length}.");
+
+            Day day = days[i - 1];
+            day.SetInput(inputPath);
+            Console.WriteLine("Problem 1: " + day.Solve1());
+            Console.WriteLine("Problem 2: " + day.Solve2());
         }
     }
 }

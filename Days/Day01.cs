@@ -8,19 +8,13 @@ namespace AoC2021
     {
         int[] input;
 
-        public Day01(string inputPath)
-        {
-            input = ParseInput(inputPath);
-        }
-
-        int[] ParseInput(string inputPath)
+        public override void SetInput(string inputPath)
         {
             StreamReader sr = new StreamReader(inputPath);
             string[] lines = sr.ReadToEnd().Split('\n');
-            int[] input = new int[lines.Length - 1];    // exclude last empty line
+            input = new int[lines.Length - 1];    // exclude last empty line
             for (int i = 0; i < input.Length; ++i)
                 input[i] = int.Parse(lines[i]);
-            return input;
         }
 
         public override string Solve1()
