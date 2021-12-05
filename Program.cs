@@ -36,10 +36,16 @@ namespace AoC2021
             if (o.Day == 0)
                 for (uint i = 1U; i <= days.Length; ++i)
                 {
+                    Console.WriteLine($"Day {i,2:00}");
                     SolveDay(i, GetFileName(i, o.InputDirectory, o.Example));
+                    Console.WriteLine();
                 }
             else
+            {
+                Console.WriteLine($"Day {o.Day,2:00}");
                 SolveDay(o.Day, GetFileName(o.Day, o.InputDirectory, o.Example));
+                Console.WriteLine();
+            }
         }
 
         static string GetFileName(uint i, string inputDirectory, bool example)
