@@ -16,6 +16,18 @@ namespace AoC2021
                 this.y = y;
             }
 
+            public override bool Equals(object obj)
+            {
+                if (obj == null || GetType() != obj.GetType())
+                    return false;
+
+                Point other = (Point)obj;
+                return other.x == x && other.y == y;
+            }
+            public override int GetHashCode()
+            {
+                return (x << 2) ^ y;
+            }
             public static bool operator ==(Point a, Point b) => a.x == b.x && a.y == b.y;
             public static bool operator !=(Point a, Point b) => !(a == b);
         }
