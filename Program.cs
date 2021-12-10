@@ -1,6 +1,6 @@
 ﻿using System;
 using CommandLine;
-using System.Collections.Generic;
+using System.Reflection;
 
 namespace AoC2021
 {
@@ -23,8 +23,6 @@ namespace AoC2021
             public bool Example { get; set; }
         }
 
-        static Day[] days = { new Day01(), new Day02(), new Day03(), new Day04(), new Day05(), new Day06(), new Day07(), new Day08(), new Day09(), new Day10() };
-
         static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
@@ -34,7 +32,7 @@ namespace AoC2021
         static void RunOptions(Options o)
         {
             if (o.Day == 0)
-                for (uint i = 1U; i <= days.Length; ++i)
+                for (uint i = 1U; i <= 25; ++i)
                 {
                     Console.WriteLine($"Day {i,2:00}");
                     SolveDay(i, GetFileName(i, o.InputDirectory, o.Example));
@@ -53,13 +51,28 @@ namespace AoC2021
 
         static void SolveDay(uint i, string inputPath)
         {
-            if (i == 0 || i > days.Length)
-                throw new ArgumentOutOfRangeException($"{i} is not valid day - use value from 0 to {days.Length}.");
-
-            Day day = days[i - 1];
-            day.SetInput(inputPath);
-            Console.WriteLine("Problem 1: " + day.Solve1());
-            Console.WriteLine("Problem 2: " + day.Solve2());
+            try
+            {
+                Day day;
+                day = GetDay(i);
+                day.SetInput(inputPath);
+                Console.WriteLine("Part 1: " + day.Solve1());
+                Console.WriteLine("Part 2: " + day.Solve2());
+            }
+            catch (TypeLoadException)
+            {
+                Console.WriteLine($"Day {i,2:00} not implemented!");
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                Console.WriteLine($"Input file '{inputPath}' not found!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception occured: {e.ToString()}");
+            }
         }
+
+        static Day GetDay(uint i) => (Day)Activator.CreateInstance(null, $"AoC2021.Day{i,2:00}").Unwrap();
     }
 }
