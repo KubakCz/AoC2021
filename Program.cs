@@ -23,12 +23,12 @@ namespace AoC2021
             public bool Example { get; set; }
         }
 
-        static Day[] days = { new Day01(), new Day02(), new Day03(), new Day04(), new Day05(), new Day06(), new Day07(), new Day08(), new Day09() };
+        static Day[] days = { new Day01(), new Day02(), new Day03(), new Day04(), new Day05(), new Day06(), new Day07(), new Day08(), new Day09(), new Day10() };
 
         static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                   .WithParsed<Options>(RunOptions);
+                          .WithParsed<Options>(RunOptions);
         }
 
         static void RunOptions(Options o)
