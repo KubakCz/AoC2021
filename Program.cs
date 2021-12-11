@@ -63,9 +63,13 @@ namespace AoC2021
             {
                 Console.WriteLine($"Day {i,2:00} not implemented!");
             }
-            catch (System.IO.FileNotFoundException)
+            catch (System.IO.FileNotFoundException e)
             {
-                Console.WriteLine($"Input file '{inputPath}' not found!");
+                Console.WriteLine($"Input file '{e.FileName}' not found!");
+            }
+            catch (FileFormatException e)
+            {
+                Console.WriteLine($"Bad file format!\n\t{e.Message}");
             }
             catch (Exception e)
             {
