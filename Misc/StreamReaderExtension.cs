@@ -9,11 +9,12 @@ namespace AoC2021
         /// Reads the whole file line by line.
         /// Allows using IEnumerable methods without need to read the whole file to the memory.
         /// </summary>
-        public static IEnumerable<string> ReadLines(this StreamReader sr)
+        public static IEnumerable<string> ReadLines(this StreamReader sr, bool excludeEmpty = false)
         {
             string line;
             while ((line = sr.ReadLine()) != null)
-                yield return line;
+                if (!excludeEmpty || line != "")
+                    yield return line;
         }
     }
 }
